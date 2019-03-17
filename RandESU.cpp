@@ -83,7 +83,7 @@ bool RandESU::isExclusive(Graph& graph, vertex node, Subgraph& subgraph) {
  * @param subgraphSize    the size of the target Subgraphs
  */
 
-void RandESU::enumerate(Graph& graph, SubgraphEnumerationResult& subgraphs, int subgraphsize, const vector<double> probs) {
+void RandESU::enumerate(Graph& graph, SubgraphEnumerationResult& subgraphs, int subgraphsize, const vector<double> &probs) {
     // maintain list of nodes selected so far
     std::vector<vertex> selectedVertices;
     if (probs[0] == 1.0) // select all nodes
@@ -121,7 +121,7 @@ void RandESU::enumerate(Graph& graph, SubgraphEnumerationResult& subgraphs, int 
  * @param probs
  * @param vertex
  */
-void RandESU::enumerate(Graph& graph, SubgraphEnumerationResult& subgraphs, int subgraphsize, const vector<double> probs, vertex vertexV, NautyLink& nautylink) {
+void RandESU::enumerate(Graph& graph, SubgraphEnumerationResult& subgraphs, int subgraphsize, const vector<double> &probs, vertex vertexV, NautyLink& nautylink) {
     // create a subgraph with given subgraphsize
 
 
