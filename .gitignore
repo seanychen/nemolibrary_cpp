@@ -1,4 +1,10 @@
+# ignore clion setting files
 .idea/
+
+# vscode 
+.vscode/
+
+# cmake build file excluded
 cmake-build-debug/
 CMakeCache.txt
 CMakeFiles/
@@ -8,3 +14,7 @@ nemolib
 nemolib_CPP.cbp
 nemolib_C___final.cbp
 
+# temporary file delete
+*.[oa]
+*~
+*.a
