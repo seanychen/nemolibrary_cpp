@@ -132,15 +132,12 @@ void RandESU::enumerate(Graph& graph, SubgraphEnumerationResult& subgraphs, int 
     unordered_set<vertex> adjacencyList = graph.getAdjacencyList(vertexV);
     vector<vertex> extends;
 
-    unordered_set<vertex>::const_iterator iter = adjacencyList.begin();
-
-    while (iter != adjacencyList.end()) {
+    for (auto iter = adjacencyList.begin(); iter != adjacencyList.end(); ++iter) {
         vertex next = *iter;
 
         //add the vertex to the adjacencyList only if the index is bigger than the vertex
         if (next > vertexV)
             extends.push_back(next);
-        iter++;
     }
 
     subgraph.add(vertexV); // add to the subgraph, the vertex and its corresponding adjacencylist
