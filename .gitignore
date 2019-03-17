@@ -1,4 +1,10 @@
 .idea/
 cmake-build-debug/
-
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+nemolib
+nemolib_CPP.cbp
+nemolib_C___final.cbp
 
