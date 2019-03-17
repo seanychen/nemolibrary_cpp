@@ -19,14 +19,14 @@ typedef uint_fast64_t uint64;
 typedef uint64 graph64;
 typedef uint64 edge;
 typedef uint_fast64_t vertex;
-typedef short edgetype;
+typedef int edgetype;
 
 const edgetype NOEDGE_UV = 0;
 const edgetype DIR_U_T_V = 1;
 const edgetype DIR_V_T_U = 2;
 const edgetype UNDIR_U_V = 3;
-const short INDEG = 0;
-const short OUDEG = 1;
+const int INDEG = 0;
+const int OUDEG = 1;
 const vertex NILLVERTEX = 0xFFFFFFFFUL;
 
 inline edge new_edge(vertex u, vertex v)
