@@ -83,7 +83,7 @@ Graph RandomGraphGenerator:: generate(Graph& inputGraph){
     
 }
 
-Graph RandomGraphGenerator::generate(Graph& inputGraph, vector <int> probs){
+Graph RandomGraphGenerator::generate(Graph& inputGraph, const vector <int> &probs){
     vector<int> degreeSeq = getDegreeSequenceVector(inputGraph);
     bool directed = inputGraph.isDirected();
     Graph randomGraph(directed);
@@ -98,11 +98,12 @@ Graph RandomGraphGenerator::generate(Graph& inputGraph, vector <int> probs){
         for (int degree=0; degree<degreeSeq[vertex];++degree)
             vertexList.push_back(vertex);        
     }
-    random_shuffle(vertexList.begin(), vertexList.end());
+//    random_shuffle(vertexList.begin(), vertexList.end());
+    shuffle(vertexList.begin(), vertexList.end(), default_random_engine{});
     
     // create edges
     int u,v;
-    vector<int>::iterator it=probs.begin(); 
+    auto it=probs.begin();
     for (int c=0; vertexList.size()>1;++c){
         u = *(it++); 
         // make sure v != u

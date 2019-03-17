@@ -116,7 +116,7 @@ double StatisticalAnalysis::getPValue(graph64 label) {
     for (double randFreq : randFreqs) {
         // if randFreq >= targetFreq
         if (randFreq >= targetFreq) {
-            prePValue++;
+            ++prePValue;
         }
     }
     double randFreqCount = randFreqs.size();
