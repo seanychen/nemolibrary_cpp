@@ -4,171 +4,129 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   Subgraph.cpp
  * Author: Wooyoung
- * 
+ *
  * Created on October 23, 2017, 2:34 PM
  */
 
-
-
 #include "Subgraph.h"
 
-
- /**
-	 * Construct a subgraph of a specified order (i.e. number of nodes)
-	 * @param order the order of this subgraphs
-	 */
-
-
-Subgraph::Subgraph(int order){
-    this->order = order; 
-}
-
-Subgraph::~Subgraph(){
-     this->order = 0;
-}
 /**
-	 * Create a deep copy of this subgraph
-	 * @return a deep copy of this subgraph
-	 */
-
-Subgraph Subgraph::copy(){
-    Subgraph copy(order);
-    copy.order = order;
-    for (int i=0; i<nodes.size();i++){
-        copy.nodes.push_back(nodes.at(i));
-    }
-    return copy;
-}
+ * Constructor a graph of a specific order (i.e. number of nodes)
+ * @param order the order of this subgraphs
+ */
+Subgraph::Subgraph(const int &order) : order(order) {}
 
 /**
-	 * Get the current size of this Subgraph.
-	 * @return the size of this Subgraph.
-	 */ 
-
-
-int Subgraph::getSize(){
+ * Get the current size of this Subgraph.
+ * @return
+ */
+int Subgraph::getSize() {
     return nodes.size();
 }
 
 /**
-	 * Get number of possible nodes in this Subgraph
-	 * @return the maximum order of this Subgraph
-	 */
-
-
-int Subgraph::getOrder(){
+ * Get number of possible nodes in this Subgraph
+ * @return the maximum order of this Subgraph
+ */
+int Subgraph::getOrder() {
     return order;
 }
-/**
-	 * Test whether this subgraph has been filled
-	 * @return true if subgraph is full; false otherwise
-	 */
 
-bool Subgraph::isComplete(){
+bool Subgraph::isComplete() {
     return (nodes.size() == order);
 }
+
 /**
- * Gets the id number of the first vertex added to this Subgraph
+ * Get the id number of the first vertex added to this Subgraph
  * @return the id of the root
  */
-
 int Subgraph::root() {
-    if (nodes.size()<1) {
-       cout<< "It is currently empty"<<endl;
-        return -1;    
+    if (nodes.empty()) {
+        cerr << "It is currently empty" << endl;
+        return -1;
     }
-    return nodes.at(0);
+
+    return static_cast<int>(nodes.front());
 }
-    
+
 /**
  * Check whether a vertex exists in this Subgraph
  * @param vertex the target vertex
- * @return true if this subgraph contains the specified vertex, false
- * otherwise
+ * @return true if this subgraph contains the specific vertex, false otherwise
  */
-
-
-bool Subgraph::contains(vertex v) {  
-        
-    for (int i = 0; i < nodes.size(); i++) {
-        if (nodes.at(i) == v) {
-            return true;
-        }
-    }
-    return false;
+bool Subgraph::contains(const vertex &v) {
+    return find(nodes.begin(), nodes.end(), v) != nodes.end();
 }
 
 /**
  * Add a vertex to this Subgraph
- * @param vertex the vertex to add to this Subgraph
- * @param adjacencyList the adjacencyList of the vertex being added
- * @precondition: cannot add if the subgraph is complete
+ * @param v the vertex to add to this subgraph.
+ * @pre cannot add if the subgraph is complete
+ * @return whether vertex add is success.
  */
-
-void Subgraph::add(vertex v) {
-    if(isComplete()){
-        cout<<"The subgraph is full:: Cannot add more"<<endl;
-       return;
+bool Subgraph::add(const vertex &v) {
+    if (isComplete()) {
+        cerr << "The subgraph is full:: Cannot add more" << endl;
+        return false;
     }
-   
+
     nodes.push_back(v);
-    
+    return true;
 }
+
 /**
- * Get the nth node added to this Subgraph
- * @return the nth node added to this Subgraph
+ * Get the nth node added to this subgraph
+ *
+ * @param n nth node
+ * @return the nth node that added to this Subgraph.
  */
-
-
-int Subgraph::get(int n) {
-    if((n>nodes.size()-1)||(nodes.size()<1)){
-        cout<<n<<"th index is not available"<<endl;
+int Subgraph::get(const int &n) {
+    int nodeSize = nodes.size();
+    if ((nodeSize - 1) < n || nodes.empty()) {
+        cerr << n << "th index is not available" << endl;
         return -1;
     }
-    return nodes.at(n);
+
+    return static_cast<int>(nodes.at(n));
 }
+
 /**
  * Get all the nodes in this Subgraph
- * @return this Subgraph's nodes
+ * @return this subgraph's nodes (reference)
  */
-
-
-vector<vertex>& Subgraph::getNodes() {
+vector<vertex> &Subgraph::getNodes() {
     return nodes;
 }
 
 /**
-	 * Return a string representation of this Subgraph. Should display in the 
-	 * format [x, y, z], where x, y, and z represent vertices in this subgraph.
-	 * @return a string representation of this subgraph
-	 */
+ * Return a string representation of this Subgraph. Should display in the format [x, y, z] where x, y, z represent
+ * vertices in this subgraph.
+ * @param out
+ * @param sgraph
+ * @return a string representation of this subgraph.
+ */
+ostream &operator<<(ostream &out, const Subgraph &sgraph) {
+    string s = "[";
+    if (sgraph.nodes.empty()) {
+        out << "empty";
+        return out;
+    }
 
-
-
- ostream& operator<<(ostream& out, const Subgraph& sgraph) {
-     string s = "[";
-     if (sgraph.nodes.size()<1) {
-         out<<"empty";
-         return out;
-     }
-         
-     for (int i=0; i<sgraph.nodes.size()-1; i++){
-         stringstream ss;
-         ss<<sgraph.nodes.at(i);
-         s = s+ss.str()+",";
-     }
-     stringstream last;
-     last<<sgraph.nodes.at(sgraph.nodes.size()-1);
-     s = s+last.str()+"]";
+    stringstream ss;
+    for (auto itr = sgraph.nodes.begin(); itr != (sgraph.nodes.end() - 1); ++itr) {
+        ss << *itr;
+        s = s + ss.str() + ",";
+    }
+    ss << *(sgraph.nodes.end() - 1);
+    s = s + ss.str() + "]";
 
     out << s;
 
     return out;
-
 }
 
- 
- 
+
+

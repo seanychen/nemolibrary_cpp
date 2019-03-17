@@ -4,58 +4,60 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   Subgraph.h
  * Author: Wooyoung
  *
  * Created on October 23, 2017, 2:34 PM
  * Note that this Subgraph class is different from Java version, where the adjacentmatrix is necessary
- * It will inherit most of the functions from Graph 
- * 
+ * It will inherit most of the functions from Graph
+ *
  */
 
-#ifndef SUBGRAPH_H
-#define SUBGRAPH_H
-
-
-
+#ifndef NEMOLIBRARY_C_SUBGRAPH_H
+#define NEMOLIBRARY_C_SUBGRAPH_H
 
 #include <iostream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <algorithm>
+#include "graph64.hpp"
+
 using std::ostream;
 using std::cout;
 using std::endl;
-
-#include <string>
-#include <sstream>
 using std::string;
 using std::stringstream;
-
-#include <vector>
 using std::vector;
-
-
-#include "graph64.hpp"
-
+using std::find;
 
 class Subgraph {
-   friend ostream& operator<< (ostream&, const Subgraph&);
+    friend ostream &operator<<(ostream &, const Subgraph &);
+
 public:
-    Subgraph(int); /// the order of this subgraphs
-    virtual ~Subgraph();
-    Subgraph copy();
+    Subgraph(const int &);
+
     int getSize();
+
     int getOrder();
-    int root(); //get the first vertex id added to this subgraph
-    bool contains(vertex); //Check whether a vertex exists in this Subgraph
-    void add(vertex);
-    int get(int); //get the nth node of this subgraph
-    vector<vertex>& getNodes();
+
+    int root();
+
+    bool contains(const vertex &);
+
+    bool add(const vertex &);
+
+    int get(const int &);
+
+    vector<vertex> &getNodes();
+
     bool isComplete();
-    
+
 private:
-    vector<vertex> nodes; // get the list of vertex lists
-    int order; // the intended size
- };
+    vector<vertex> nodes;
+    int order;
+};
 
-#endif /* SUBGRAPH_H */
 
+#endif //NEMOLIBRARY_C_SUBGRAPH_H
