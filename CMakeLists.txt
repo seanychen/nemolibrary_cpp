@@ -9,6 +9,8 @@ include_directories(nauty)
 IF (CMAKE_COMPILER_IS_GNUCC)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O2")
     set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O2")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
 ENDIF (CMAKE_COMPILER_IS_GNUCC)
 
 add_executable(nemolib
