@@ -36,8 +36,8 @@
  *   This file can be included any number of times provided the value
  *   of SORT_NAME is different each time.
  */
- 
-#define SORT_MEDIAN_OF_3(a,b,c) \
+
+#define SORT_MEDIAN_OF_3(a, b, c) \
  ((a) <= (b) ? ((b) <= (c) ? (b) : (c) <= (a) ? (a) : (c)) \
              : ((a) <= (c) ? (a) : (c) <= (b) ? (b) : (c)))
 /*
@@ -70,8 +70,8 @@
 #define SORT_FUNCTYPE static void
 #endif
 
-#define SORT_SWAP1(x,y) tmp1 = x; x = y; y = tmp1;
-#define SORT_SWAP2(x,y) tmp2 = x; x = y; y = tmp2;
+#define SORT_SWAP1(x, y) tmp1 = x; x = y; y = tmp1;
+#define SORT_SWAP2(x, y) tmp2 = x; x = y; y = tmp2;
 
 /*******************************************************************/
 
@@ -96,9 +96,9 @@ SORT_NAME(SORT_TYPE1 *x, int n)
 
     while (top > 0)
     {
-	--top;
-	x0 = stack[top].addr;
-	nn = stack[top].len;
+    --top;
+    x0 = stack[top].addr;
+    nn = stack[top].len;
 
         if (nn < SORT_MINPARTITION)
         {
@@ -112,81 +112,81 @@ SORT_NAME(SORT_TYPE1 *x, int n)
                 }
                 x0[j] = tmp1;
             }
-	    continue;
+        continue;
         }
 
         if (nn < SORT_MINMEDIAN9)
             v = SORT_MEDIAN_OF_3(x0[0],x0[nn/2],x0[nn-1]);
         else
         {
-	    v1 = SORT_MEDIAN_OF_3(x0[0],x0[1],x0[2]);
-	    v2 = SORT_MEDIAN_OF_3(x0[nn/2-1],x0[nn/2],x0[nn/2+1]);
-	    v3 = SORT_MEDIAN_OF_3(x0[nn-3],x0[nn-2],x0[nn-1]);
-	    v = SORT_MEDIAN_OF_3(v1,v2,v3);
+        v1 = SORT_MEDIAN_OF_3(x0[0],x0[1],x0[2]);
+        v2 = SORT_MEDIAN_OF_3(x0[nn/2-1],x0[nn/2],x0[nn/2+1]);
+        v3 = SORT_MEDIAN_OF_3(x0[nn-3],x0[nn-2],x0[nn-1]);
+        v = SORT_MEDIAN_OF_3(v1,v2,v3);
         }
 
         xa = xb = x0;  xc = xd = x0+(nn-1);
         for (;;)
         {
-	    while (xb <= xc && *xb <= v)
-	    {
-	        if (*xb == v)
-	        {
-		    *xb = *xa; *xa = v; ++xa;
-	        }
-	        ++xb;
-	    }
-	    while (xc >= xb && *xc >= v)
-	    {
-	        if (*xc == v)
-	        {
-		    *xc = *xd; *xd = v; --xd;
-	        }
-	        --xc;
-	    }
-	    if (xb > xc) break;
-            SORT_SWAP1(*xb,*xc);
-	    ++xb;
-	    --xc;
+        while (xb <= xc && *xb <= v)
+        {
+            if (*xb == v)
+            {
+            *xb = *xa; *xa = v; ++xa;
+            }
+            ++xb;
         }
-    
+        while (xc >= xb && *xc >= v)
+        {
+            if (*xc == v)
+            {
+            *xc = *xd; *xd = v; --xd;
+            }
+            --xc;
+        }
+        if (xb > xc) break;
+            SORT_SWAP1(*xb,*xc);
+        ++xb;
+        --xc;
+        }
+
         a = xa - x0;
         ba = xb - xa;
         if (ba > a) s = a; else s = ba;
         for (xl = x0, xh = xb-s; s > 0; --s)
         {
-	    *xl = *xh; *xh = v; ++xl; ++xh;
+        *xl = *xh; *xh = v; ++xl; ++xh;
         }
         d = xd - x0;
         dc = xd - xc;
         if (dc > nn-1-d) s = nn-1-d; else s = dc;
         for (xl = xb, xh = x0 + (nn-s); s > 0; --s)
         {
-	    *xh = *xl; *xl = v; ++xl; ++xh;
+        *xh = *xl; *xl = v; ++xl; ++xh;
         }
 
-	if (ba > dc)
-	{
-	    if (ba > 1)
-	    {
-	        stack[top].addr = x0; stack[top].len = ba; ++top;
-	    }
-	    if (dc > 1)
-	    {
-	        stack[top].addr = x0+(nn-dc); stack[top].len = dc; ++top;
-	    }
-	}
-	else
-	{
-	    if (dc > 1)
-	    {
-	        stack[top].addr = x0+(nn-dc); stack[top].len = dc; ++top;
-	    }
-	    if (ba > 1)
-	    {
-	        stack[top].addr = x0; stack[top].len = ba; ++top;
-	    }
-	}
+    if (ba > dc)
+    {
+        if (ba > 1)
+        {
+            stack[top].addr = x0; stack[top].len = ba; ++top;
+        }
+        if (dc > 1)
+        {
+            stack[top].addr = x0+(nn-dc); stack[top].len = dc; ++top;
+        }
+    }
+    else
+    {
+        if (dc > 1)
+        {
+            stack[top].addr = x0+(nn-dc); stack[top].len = dc; ++top;
+        }
+        if (ba > 1)
+        {
+            stack[top].addr = x0; stack[top].len = ba; ++top;
+        }
+    }
     }
 }
 #endif
@@ -213,10 +213,10 @@ SORT_NAME(SORT_TYPE1 *x, SORT_TYPE2 *y, int n)
 
     while (top > 0)
     {
-	--top;
-	x0 = stack[top].addr;
-	y0 = y + (x0-x);
-	nn = stack[top].len;
+    --top;
+    x0 = stack[top].addr;
+    y0 = y + (x0-x);
+    nn = stack[top].len;
 
         if (nn < SORT_MINPARTITION)
         {
@@ -233,87 +233,87 @@ SORT_NAME(SORT_TYPE1 *x, SORT_TYPE2 *y, int n)
                 x0[j] = tmp1;
                 y0[j] = tmp2;
             }
-	    continue;
+        continue;
         }
 
         if (nn < SORT_MINMEDIAN9)
             v = SORT_MEDIAN_OF_3(x0[0],x0[nn/2],x0[nn-1]);
         else
         {
-	    v1 = SORT_MEDIAN_OF_3(x0[0],x0[1],x0[2]);
-	    v2 = SORT_MEDIAN_OF_3(x0[nn/2-1],x0[nn/2],x0[nn/2+1]);
-	    v3 = SORT_MEDIAN_OF_3(x0[nn-3],x0[nn-2],x0[nn-1]);
-	    v = SORT_MEDIAN_OF_3(v1,v2,v3);
+        v1 = SORT_MEDIAN_OF_3(x0[0],x0[1],x0[2]);
+        v2 = SORT_MEDIAN_OF_3(x0[nn/2-1],x0[nn/2],x0[nn/2+1]);
+        v3 = SORT_MEDIAN_OF_3(x0[nn-3],x0[nn-2],x0[nn-1]);
+        v = SORT_MEDIAN_OF_3(v1,v2,v3);
         }
 
         xa = xb = x0;  xc = xd = x0+(nn-1);
         ya = yb = y0;  yc = yd = y0+(nn-1);
         for (;;)
         {
-	    while (xb <= xc && *xb <= v)
-	    {
-	        if (*xb == v)
-	        {
-		    *xb = *xa; *xa = v; ++xa;
-		    SORT_SWAP2(*ya,*yb); ++ya;
-	        }
-	        ++xb; ++yb;
-	    }
-	    while (xc >= xb && *xc >= v)
-	    {
-	        if (*xc == v)
-	        {
-		    *xc = *xd; *xd = v; --xd;
-		    SORT_SWAP2(*yc,*yd); --yd;
-	        }
-	        --xc; --yc;
-	    }
-	    if (xb > xc) break;
+        while (xb <= xc && *xb <= v)
+        {
+            if (*xb == v)
+            {
+            *xb = *xa; *xa = v; ++xa;
+            SORT_SWAP2(*ya,*yb); ++ya;
+            }
+            ++xb; ++yb;
+        }
+        while (xc >= xb && *xc >= v)
+        {
+            if (*xc == v)
+            {
+            *xc = *xd; *xd = v; --xd;
+            SORT_SWAP2(*yc,*yd); --yd;
+            }
+            --xc; --yc;
+        }
+        if (xb > xc) break;
             SORT_SWAP1(*xb,*xc);
             SORT_SWAP2(*yb,*yc);
-	    ++xb; ++yb;
-	    --xc; --yc;
+        ++xb; ++yb;
+        --xc; --yc;
         }
-    
+
         a = xa - x0;
         ba = xb - xa;
         if (ba > a) s = a; else s = ba;
         for (xl = x0, xh = xb-s, yl = y0, yh = yb-s; s > 0; --s)
         {
-	    *xl = *xh; *xh = v; ++xl; ++xh;
-	    SORT_SWAP2(*yl,*yh); ++yl; ++yh;
+        *xl = *xh; *xh = v; ++xl; ++xh;
+        SORT_SWAP2(*yl,*yh); ++yl; ++yh;
         }
         d = xd - x0;
         dc = xd - xc;
         if (dc > nn-1-d) s = nn-1-d; else s = dc;
         for (xl = xb, xh = x0+(nn-s), yl = yb, yh = y0+(nn-s); s > 0; --s)
         {
-	    *xh = *xl; *xl = v; ++xl; ++xh;
-	    SORT_SWAP2(*yl,*yh); ++yl; ++yh;
+        *xh = *xl; *xl = v; ++xl; ++xh;
+        SORT_SWAP2(*yl,*yh); ++yl; ++yh;
         }
 
-	if (ba > dc)
-	{
-	    if (ba > 1)
-	    {
-	        stack[top].addr = x0; stack[top].len = ba; ++top;
-	    }
-	    if (dc > 1)
-	    {
-	        stack[top].addr = x0+(nn-dc); stack[top].len = dc; ++top;
-	    }
-	}
-	else
-	{
-	    if (dc > 1)
-	    {
-	        stack[top].addr = x0+(nn-dc); stack[top].len = dc; ++top;
-	    }
-	    if (ba > 1)
-	    {
-	        stack[top].addr = x0; stack[top].len = ba; ++top;
-	    }
-	}
+    if (ba > dc)
+    {
+        if (ba > 1)
+        {
+            stack[top].addr = x0; stack[top].len = ba; ++top;
+        }
+        if (dc > 1)
+        {
+            stack[top].addr = x0+(nn-dc); stack[top].len = dc; ++top;
+        }
+    }
+    else
+    {
+        if (dc > 1)
+        {
+            stack[top].addr = x0+(nn-dc); stack[top].len = dc; ++top;
+        }
+        if (ba > 1)
+        {
+            stack[top].addr = x0; stack[top].len = ba; ++top;
+        }
+    }
     }
 }
 #endif
@@ -339,16 +339,16 @@ SORT_NAME(SORT_TYPE1 *x, SORT_TYPE2 *y, int n)
 
     while (top > 0)
     {
-	--top;
-	x0 = stack[top].addr;
-	nn = stack[top].len;
+    --top;
+    x0 = stack[top].addr;
+    nn = stack[top].len;
 
         if (nn < SORT_MINPARTITION)
         {
             for (i = 1; i < nn; ++i)
             {
                 tmp1 = x0[i];
-		tmp2 = y[tmp1];
+        tmp2 = y[tmp1];
                 for (j = i; y[x0[j-1]] > tmp2; )
                 {
                     x0[j] = x0[j-1];
@@ -356,81 +356,81 @@ SORT_NAME(SORT_TYPE1 *x, SORT_TYPE2 *y, int n)
                 }
                 x0[j] = tmp1;
             }
-	    continue;
+        continue;
         }
 
         if (nn < SORT_MINMEDIAN9)
             v = SORT_MEDIAN_OF_3(y[x0[0]],y[x0[nn/2]],y[x0[nn-1]]);
         else
         {
-	    v1 = SORT_MEDIAN_OF_3(y[x0[0]],y[x0[1]],y[x0[2]]);
-	    v2 = SORT_MEDIAN_OF_3(y[x0[nn/2-1]],y[x0[nn/2]],y[x0[nn/2+1]]);
-	    v3 = SORT_MEDIAN_OF_3(y[x0[nn-3]],y[x0[nn-2]],y[x0[nn-1]]);
-	    v = SORT_MEDIAN_OF_3(v1,v2,v3);
+        v1 = SORT_MEDIAN_OF_3(y[x0[0]],y[x0[1]],y[x0[2]]);
+        v2 = SORT_MEDIAN_OF_3(y[x0[nn/2-1]],y[x0[nn/2]],y[x0[nn/2+1]]);
+        v3 = SORT_MEDIAN_OF_3(y[x0[nn-3]],y[x0[nn-2]],y[x0[nn-1]]);
+        v = SORT_MEDIAN_OF_3(v1,v2,v3);
         }
 
         xa = xb = x0;  xc = xd = x0+(nn-1);
         for (;;)
         {
-	    while (xb <= xc && y[*xb] <= v)
-	    {
-	        if (y[*xb] == v)
-	        {
-		    SORT_SWAP1(*xa,*xb); ++xa;
-	        }
-	        ++xb;
-	    }
-	    while (xc >= xb && y[*xc] >= v)
-	    {
-	        if (y[*xc] == v)
-	        {
-		    SORT_SWAP1(*xc,*xd); --xd;
-	        }
-	        --xc;
-	    }
-	    if (xb > xc) break;
-            SORT_SWAP1(*xb,*xc);
-	    ++xb;
-	    --xc;
+        while (xb <= xc && y[*xb] <= v)
+        {
+            if (y[*xb] == v)
+            {
+            SORT_SWAP1(*xa,*xb); ++xa;
+            }
+            ++xb;
         }
-    
+        while (xc >= xb && y[*xc] >= v)
+        {
+            if (y[*xc] == v)
+            {
+            SORT_SWAP1(*xc,*xd); --xd;
+            }
+            --xc;
+        }
+        if (xb > xc) break;
+            SORT_SWAP1(*xb,*xc);
+        ++xb;
+        --xc;
+        }
+
         a = xa - x0;
         ba = xb - xa;
         if (ba > a) s = a; else s = ba;
         for (xl = x0, xh = xb-s; s > 0; --s)
         {
-	    SORT_SWAP1(*xl,*xh); ++xl; ++xh;
+        SORT_SWAP1(*xl,*xh); ++xl; ++xh;
         }
         d = xd - x0;
         dc = xd - xc;
         if (dc > nn-1-d) s = nn-1-d; else s = dc;
         for (xl = xb, xh = x0 + (nn-s); s > 0; --s)
         {
-	    SORT_SWAP1(*xl,*xh); ++xl; ++xh;
+        SORT_SWAP1(*xl,*xh); ++xl; ++xh;
         }
 
-	if (ba > dc)
-	{
-	    if (ba > 1)
-	    {
-	        stack[top].addr = x0; stack[top].len = ba; ++top;
-	    }
-	    if (dc > 1)
-	    {
-	        stack[top].addr = x0+(nn-dc); stack[top].len = dc; ++top;
-	    }
-	}
-	else
-	{
-	    if (dc > 1)
-	    {
-	        stack[top].addr = x0+(nn-dc); stack[top].len = dc; ++top;
-	    }
-	    if (ba > 1)
-	    {
-	        stack[top].addr = x0; stack[top].len = ba; ++top;
-	    }
-	}
+    if (ba > dc)
+    {
+        if (ba > 1)
+        {
+            stack[top].addr = x0; stack[top].len = ba; ++top;
+        }
+        if (dc > 1)
+        {
+            stack[top].addr = x0+(nn-dc); stack[top].len = dc; ++top;
+        }
+    }
+    else
+    {
+        if (dc > 1)
+        {
+            stack[top].addr = x0+(nn-dc); stack[top].len = dc; ++top;
+        }
+        if (ba > 1)
+        {
+            stack[top].addr = x0; stack[top].len = ba; ++top;
+        }
+    }
     }
 }
 #endif
