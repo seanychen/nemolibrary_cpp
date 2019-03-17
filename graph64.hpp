@@ -15,10 +15,10 @@ extern "C" {
 #include <cstdio>
 }
 
-typedef unsigned long long uint64;
+typedef uint_fast64_t uint64;
 typedef uint64 graph64;
 typedef uint64 edge;
-typedef unsigned long vertex;
+typedef uint_fast64_t vertex;
 typedef short edgetype;
 
 const edgetype NOEDGE_UV = 0;
