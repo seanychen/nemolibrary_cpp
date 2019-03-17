@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.13)
-project(nemolib_C___final)
+cmake_minimum_required(VERSION 3.5.1)
+project(nemolib_CPP)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -11,7 +11,7 @@ IF (CMAKE_COMPILER_IS_GNUCC)
     set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O2")
 ENDIF (CMAKE_COMPILER_IS_GNUCC)
 
-add_executable(nemolib_C___final
+add_executable(nemolib
         main.cpp
         nauty/gtools.c
         nauty/gtools.h
