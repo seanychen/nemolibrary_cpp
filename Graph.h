@@ -25,6 +25,7 @@
 #include <unordered_set>
 #include <fstream>
 #include <algorithm>
+#include <random>
 
 #include "graph64.hpp"
 
