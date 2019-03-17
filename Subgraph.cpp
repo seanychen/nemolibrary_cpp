@@ -85,7 +85,7 @@ bool Subgraph::add(const vertex &v) {
  */
 int Subgraph::get(const int &n) {
     int nodeSize = nodes.size();
-    if ((nodeSize - 1) < n || nodes.empty()) {
+    if ((nodeSize) < n || nodes.empty()) {
         cerr << n << "th index is not available" << endl;
         return -1;
     }
