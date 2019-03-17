@@ -74,7 +74,7 @@ private:
 	 as an integer.
 	 precondition: 0.0 <= prob <= 1.0
     **/
-    static bool shouldExtend(double);
+    static bool shouldExtend(const double &);
     
     /** returns true if the node index is exclusive to the given subgraph
 	 (that is, is not already in the subgraph, and is not adjacent to any of
@@ -85,7 +85,7 @@ private:
     
        /** extend the subgraphs recursively    
      * */
-    static void extend(Graph&, Subgraph&, vector<vertex>, const vector<double>, SubgraphEnumerationResult&, NautyLink&);
+    static void extend(Graph&, Subgraph&, vector<vertex>, const vector<double> &, SubgraphEnumerationResult&, NautyLink&);
  
 
 };

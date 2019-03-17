@@ -29,7 +29,7 @@ vertex nextVertex(vertex min, vertex max) {
     return rand() % (max - min + 1) + min;
 }
 
-bool RandESU::shouldExtend(const double prob) {
+bool RandESU::shouldExtend(const double &prob) {
 
 
     if (prob == 1.0) {
@@ -157,7 +157,7 @@ void RandESU::enumerate(Graph& graph, SubgraphEnumerationResult& subgraphs, int 
 
 }
 
-void RandESU::extend(Graph& graph, Subgraph& subgraph, vector<vertex> extension, const vector<double> probs, SubgraphEnumerationResult& subgraphs, NautyLink& nautylink) {
+void RandESU::extend(Graph& graph, Subgraph& subgraph, vector<vertex> extension, const vector<double> &probs, SubgraphEnumerationResult& subgraphs, NautyLink& nautylink) {
 
     vertex v = subgraph.root();
     vector<vertex>::const_iterator wIter = extension.begin();
@@ -173,20 +173,15 @@ void RandESU::extend(Graph& graph, Subgraph& subgraph, vector<vertex> extension,
            // for (vertex v : extension) cout << v << " ";
            // cout << "]" << endl;
             
-            vertex w = *wIter++;
-             
-            
-            // cout << "1. w = " << w << endl;             
-             
- 
+            const vertex &w = *wIter++;
+
             // check the last value in prob list
             if (shouldExtend(probs.at(probs.size() - 1))) {
  
-                Subgraph subgraphUnion = subgraph.copy();
+                Subgraph subgraphUnion = subgraph;
                 subgraphUnion.add(w);
                 subgraphs.add(subgraphUnion, nautylink);
             }
-            
         }
 
     }
@@ -215,15 +210,14 @@ void RandESU::extend(Graph& graph, Subgraph& subgraph, vector<vertex> extension,
         unordered_set<vertex> adjW = graph.getAdjacencyList(w);
 
         //unordered_set<vertex>::const_iterator uIter = adjW.begin();
-        auto uIter = adjW.begin();
 
-        while (uIter != adjW.end()) {
+
+        for (auto uIter = adjW.begin(); uIter != adjW.end(); ++uIter) {
             vertex u = *uIter;
             if (u > v)
                 if (isExclusive(graph, u, subgraph)) {
                     nextExtension.push_back(u);
                 }
-              uIter++;
         }
 
    //     cout << "2. nextExtension=[";
@@ -233,7 +227,7 @@ void RandESU::extend(Graph& graph, Subgraph& subgraph, vector<vertex> extension,
 
         // construct a union of w and the existing subgraph
 
-        Subgraph subgraphUnion = subgraph.copy();
+        Subgraph subgraphUnion = subgraph;
         subgraphUnion.add(w);
           // randomly choose whether or not to extend to the next level
         // based on the probability vector provided.
