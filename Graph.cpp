@@ -4,168 +4,137 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   Graph.cpp
  * Author: Wooyoung
- * 
+ *
  * Created on October 12, 2017, 1:51 PM
  */
 
 #include "Graph.h"
 
-Graph::Graph():Graph(false) {
-}
+Graph::Graph() : Graph(false) {}
 
-Graph::Graph(bool dir){
-    directed = dir; 
-}
+Graph::Graph(const bool &dir) : directed(dir) {}
 
+Graph::Graph(const string &filename) : Graph(filename, false) {}
 
-Graph::Graph(string filename):Graph(filename, false){
-}
-
-Graph::Graph(string filename, bool dir){
-     directed = dir;
+Graph::Graph(const string &filename, const bool &dir) : directed(dir) {
     parse(filename);
- 
 }
 
+Graph::~Graph() {}
 
-Graph::~Graph() {    
-}
 /**
- * Add a vertex to this Graph.
+ * Add a vertex to this Graph
+ *
  * @return the ID number assigned to the new vertex
  */
+int Graph::addVertex() {
 
+    adjacencyLists.push_back(unordered_set<vertex>());
 
-int Graph::addVertex(string nodeName){
-    unordered_map<string, vertex> nameToIndex;
-    nameToIndex = name2Index;
-    
-    if (nameToIndex.count(nodeName)>0){
-         cout<<"Same node already exists"<<endl;
-         return -1;
+    return adjacencyLists.size();
+}
+
+bool Graph::addVertex(const string &nodeName) {
+
+    if (name2Index.find(nodeName) != name2Index.end()) {
+        cerr << "Same node already exists" << endl;
+        return -1;
     }
-       
-    vertex index = (vertex)adjacencyLists.size();
-    nameToIndex[nodeName] = index;
 
-    adjacencyLists.push_back(unordered_set<vertex> ());
-    name2Index = nameToIndex; 
-    
-    return adjacencyLists.size()-1;   
-    
-    
+    name2Index.insert(make_pair(nodeName, adjacencyLists.size()));
+    adjacencyLists.push_back(unordered_set<vertex>());
+
+    return adjacencyLists.size() - 1;
 }
 
-// This function is used when generating random graphs
+bool Graph::addEdge(const vertex &vertexA, const vertex &vertexB) {
+    int adjacencyListSize = adjacencyLists.size();
 
-int Graph::addVertex(){
-    adjacencyLists.push_back(unordered_set<vertex> ());
- 
-    return adjacencyLists.size()-1; 
-    
-    
-}
-/**
-    * Add an edge between two existing vertices on this graph.
-    * @param vertexA One of the vertices between which to add an edge.
-    * @param vertexB The other vertex.
-    * @return true if both vertexA and vertexB exist in this Graph; false
-    * otherwise.
- */
-
-
-bool Graph::addEdge(vertex vertexA, vertex vertexB){
-    if (vertexA>adjacencyLists.size() -1 || vertexB> adjacencyLists.size()-1){
+    if ((adjacencyListSize) < vertexA || (adjacencyListSize) < vertexB || vertexA == vertexB) {
         return false;
     }
-    else
-    { // add edges for both direction
-       adjacencyLists.at(vertexA).insert(vertexB);
-       adjacencyLists.at(vertexB).insert(vertexA); 
-       
-       edge e=0;
-        if(vertexA<vertexB){
-            e = new_edge(vertexA, vertexB);
-            if(directed) edges[e]=DIR_U_T_V;
-            else edges[e]=UNDIR_U_V;
-        }
-        else{ // vertexB<vertexA
-            e=new_edge(vertexB, vertexA);
-            if(directed) edges[e]=DIR_V_T_U;
-            else edges[e]=UNDIR_U_V;            
-        }      
-     
-        return true;
-       
-    }
-    
-}
-  // get the number of nodes in the graph
-int Graph::getSize(){
-    return adjacencyLists.size();
-    
+
+    adjacencyLists.at(vertexA).insert(vertexB);
+    adjacencyLists.at(vertexB).insert(vertexA);
+
+    edge e = 0;
+    vertexA < vertexB ? e = new_edge(vertexA, vertexB) : e = new_edge(vertexB, vertexA);
+    directed ? edges.insert(make_pair(e, DIR_U_T_V)) : edges.insert(make_pair(e, UNDIR_U_V));
+
+    return true;
 }
 
-bool Graph::isDirected(){
+int Graph::getSize() {
+    return adjacencyLists.size();
+}
+
+bool Graph::isDirected() {
     return directed;
 }
 
- unordered_map < edge, edgetype > Graph::getEdges(){
-     return edges;
- }
-// get the adjacency list for a given node
-unordered_set<vertex>& Graph::getAdjacencyList(vertex index){
+unordered_set<vertex> &Graph::getAdjacencyList(const vertex &index) {
     return adjacencyLists.at(index);
-    
-    
 }
 
-
-unordered_map<string, vertex>& Graph::getNametoIndex(){
-    
-           return name2Index;
-
+unordered_map<string, vertex> &Graph::getNametoIndex() {
+    return name2Index;
 }
 
 unordered_map<vertex, string> Graph::getIndextoName() {
-
     unordered_map<vertex, string> Index2name;
     for (auto v : name2Index) {
-        Index2name[v.second] = v.first;
+        auto test = Index2name.insert(make_pair(v.second, v.first));
     }
 
     return Index2name;
-
 }
 
+unordered_map<edge, edgetype> Graph::getEdges() {
+    return edges;
+}
 
-// parses a data file into an adjacency list representing the graph
+vertex Graph::getOrCreateIndex(const string &nodeName, unordered_map<string, vertex> &nameToIndex) {
+    if (nameToIndex.find(nodeName) == nameToIndex.end()) {
+        // if the key does not exists
+        nameToIndex.insert(make_pair(nodeName, adjacencyLists.size()));
+        adjacencyLists.push_back(unordered_set<vertex>());
+    }
 
-void Graph::parse(string filename) {
+    return nameToIndex[nodeName];
+}
 
+bool Graph::parse(const string &filename) {
     unordered_map<string, vertex> nameToIndex;
 
-    // we read in all the data at once only so we can easily randomize it
-    // with Collections.shuffle()
+    // we read in all the data at once only, so we can easil randomize it
+    // with suffle
+    char buf[MIB];
     ifstream in(filename);
+    in.rdbuf()->pubsetbuf(buf, MIB);
+//    in.rdbuf()->pubsetbuf(buf, sizeof buf);
+//    in.open(filename);
+
+
     if (!in) {
         throw invalid_argument("Cannot find an input file");
     }
+
     vector<string> lines;
-    string currentline;
+    string currentLine;
     while (in) {
-        getline(in, currentline); //read each line
-        if (!currentline.empty()) lines.push_back(currentline);
+        getline(in, currentLine); // read each line
+        if (!currentLine.empty()) {
+            lines.push_back(currentLine);
+        }
     }
 
     in.close();
-    // avoid clustering (data collection bias) by randomly parsing the
-    // input lines of data
 
-    random_shuffle(lines.begin(), lines.end());
+    // shuffling the line
+    shuffle(lines.begin(), lines.end(), default_random_engine{});
 
     for (string line : lines) {
         string from, to;
@@ -173,118 +142,11 @@ void Graph::parse(string filename) {
         linesplits >> from >> to;
         vertex fromIndex = getOrCreateIndex(from, nameToIndex);
         vertex toIndex = getOrCreateIndex(to, nameToIndex);
- 
-        // don't add self edges
-        if (fromIndex == toIndex) continue;
 
-        getAdjacencyList(fromIndex).insert(toIndex);
-        getAdjacencyList(toIndex).insert(fromIndex);
-//        if (directed) getDirAdjacencyList(fromIndex).insert(toIndex);
-        
-        // now create edges (from original Rand_Esu maingraph.cpp)
-        // create edge id from u and v (u < v)
-        edge e=0;
-        if(fromIndex<toIndex){
-            e = new_edge(fromIndex, toIndex);
-            if(directed) edges[e]=DIR_U_T_V;
-            else edges[e]=UNDIR_U_V;
-        }
-        else{ // toIndex<fromIndex
-            e=new_edge(toIndex, fromIndex);
-            if(directed) edges[e]=DIR_V_T_U;
-            else edges[e]=UNDIR_U_V;            
-        }
-
-
-
+        addEdge(fromIndex, toIndex);
     }
+
     name2Index = nameToIndex;
+    return true;
 }
 
-
-    
- // get index of a node given the node's name
-    // create an entry if it does not exist
-vertex Graph::getOrCreateIndex(string nodeName, unordered_map<string,vertex>& nameToIndex){
-    
-    if(nameToIndex.count(nodeName)<1){ // if the key does not exists      
-        vertex index = (vertex) adjacencyLists.size();
-        nameToIndex[nodeName]=index;
-         adjacencyLists.push_back(unordered_set<vertex>());     
-  //      if(directed) dir_adjacencyLists.push_back(unordered_set<vertex>());
-        
-    }
-    
-    return nameToIndex[nodeName];
-    
-  }
-
-
-/* print out graph: different from Java print version
- vertices: list of vertices (as <original, index>) 
-*/
-
-ostream& operator<< (ostream& out, const Graph& graph){
-  
-    unordered_map<string, vertex> vertexMap = graph.name2Index;
-
-   
-    out<<"Vertices: ";
-    for (auto it : vertexMap) 
-        out << "< " << it.first << ":" << it.second<<"> ";
-    cout<<endl;
-    
-    
-    out<<endl<<"Edges: "<<endl;
-        for (auto ed:graph.edges){
-            edge code = ed.first;
-            edgetype type = ed.second;
-            vertex u = edge_get_u(code);
-            vertex v = edge_get_v(code);
-            out<<"<";
-            
-            if (type == DIR_U_T_V) out<<u<<"->"<<v;
-            else if (type == DIR_V_T_U) out<<v<<"->"<<u;
-            else if (type == UNDIR_U_V) out<<u<<"--"<<v;
-            out<<"> ";
-        
-    }
-    out<<endl;
-    
-    int edgec=graph.edges.size();
-       
-    
-     out<<"Directed?="<<graph.directed<<", |V| = "<<graph.adjacencyLists.size()<<": |E| = "<<edgec<<endl;
-     
-    return out;
-            
-}
-
-ostream& operator<< (ostream& out, Graph::Edge& edge){
-    out<<"["<<edge.nodeA<<","<<edge.nodeB<<"]"<<endl;
-    return out;
-}
-
-
-Graph::Edge::Edge(){
-    throw invalid_argument("Assertion Error");
-    
-}
-
-
-
-Graph::Edge::Edge(vertex nodeA, vertex nodeB){
-    this->nodeA = nodeA;
-    this->nodeB = nodeB;    
-}
-
-bool Graph::Edge::equals(Graph::Edge& edge, bool dir){
-    
-    bool result;
-    if (dir)
-        result = ((edge.nodeA==this->nodeA)&&(edge.nodeB==this->nodeB));
-    else
-        result = ((edge.nodeA==this->nodeA)&&(edge.nodeB==this->nodeB))||((edge.nodeA==this->nodeB)&&(edge.nodeB==this->nodeA));
-    return result;
-    
-}
