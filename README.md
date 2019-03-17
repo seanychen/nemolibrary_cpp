@@ -117,5 +117,3 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## RandESU.h RandESU.cpp
 - post order increment to preorder increment
 - Make use of refernce more.
-
-## 
