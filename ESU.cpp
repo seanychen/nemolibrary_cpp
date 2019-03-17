@@ -17,7 +17,7 @@ void ESU::enumerate(Graph& graph, SubgraphEnumerationResult& subgraphs, int subg
     
     
     NautyLink nautylink(subgraphSize, graph.getEdges(), graph.isDirected());
-    for (int i = 0; i < graph.getSize(); i++) {
+    for (int i = 0; i < graph.getSize(); ++i) {
         enumerate(graph, subgraphs, subgraphSize, i, nautylink);
     }
 }
