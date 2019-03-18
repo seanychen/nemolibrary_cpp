@@ -46,6 +46,12 @@ Label   RelFreq         Mean            StDev           Z-Score         P-Value
 Time = 8176.177ms
 ```
 
+## test script
+In order to test the program, you can simple run the test script. It will save the result into result.txt
+```
+sh ./run_test.sh
+```
+
 ## Acknowledgments
 * Prof. Wooyoung Kim
 
