@@ -1,94 +1,57 @@
-# Project Title
+# Nemostatic library c++
 
-Nemostatic library, and the code is originally written by Prof. Wooyoung Kim.
+Code is originally written by Prof. Wooyoung Kim.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Compare to Java, C++ is close to system level; however the performance of C++ is slower than Java nemolibrary. The algorithm that both C++, and Java invoke is the same. We provided C++ code with some optimization; however the performance of C++ code still need to be improved.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+- G++ 5.4 or greater.
+- GNU/Linux environemtn
+- cmake 3.5.1 or greater
+
+
+
+### Compilie and run
 
 ```
-Give examples
+cmake CMakeLists.txt
+make -j4
+./nemolib test_samples/mytest.txt 3 1000 0
 ```
 
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
+example output
 ```
-Give the example
+Analyzing target graph...
+238 => 0.259794
+78 => 0.740206
+Analyzing random graphs...
+Analyzing random graph 100...
+Analyzing random graph 200...
+Analyzing random graph 300...
+Analyzing random graph 400...
+Analyzing random graph 500...
+Analyzing random graph 600...
+Analyzing random graph 700...
+Analyzing random graph 800...
+Analyzing random graph 900...
+Analyzing random graph 1000...
+Comparing target graph to random graphs
+Label   RelFreq         Mean            StDev           Z-Score         P-Value
+238     25.979%         1.313%          0.002           112.578         0.000
+78      74.021%         98.687%         0.002           -112.578                1.000
+
+Time = 8176.177ms
 ```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* Prof. Wooyoung Kim
 
 
 
-# Change Log
+# Change Log (included in git log, or better way to include?)
 ## graph.hpp -> graph.h
 - unsigned long long -> uint_fast64_t (gaurantee the fastest int)
 
